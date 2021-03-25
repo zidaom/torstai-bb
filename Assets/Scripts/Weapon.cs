@@ -11,9 +11,11 @@ public class Weapon : MonoBehaviour
     private GameObject sphere = null;
     public float throwForce = 50f;
     public float maxThrowForce = 4f;
-
     private float holdDownTimer;
-    // Start is called before the first frame update
+
+    public float range = 10f;
+    public float pushForce = 20f;
+
     void Start()
     {
         FPSCamera = Camera.main;
@@ -32,6 +34,28 @@ public class Weapon : MonoBehaviour
         {
             float totalTime = Time.time - holdDownTimer;
             Throw(CalculateHoldDownForce(totalTime * 2f));
+        }
+        if (Input.GetButtonDown("Fire1"))
+        {
+            ProcessRayCast();
+        }
+
+    }
+
+
+    private void ProcessRayCast()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(FPSCamera.transform.position, FPSCamera.transform.forward, out hit, range))
+        {
+            Rigidbody rb = hit.collider.gameObject.GetComponent<Rigidbody>();
+            if (rb == null)
+            {
+                return;
+            }
+
+            rb.AddForce(FPSCamera.transform.forward * pushForce, ForceMode.Impulse);
         }
     }
 

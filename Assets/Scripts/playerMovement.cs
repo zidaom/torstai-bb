@@ -7,7 +7,9 @@ public class playerMovement : MonoBehaviour
     private CharacterController controller;
     private float gravity = -9.81f;
 
-    private float moveSpeed = 8f;
+    private float moveSpeed = 8f, runSpeed = 1.8f;
+    private float pushForce = 5f;
+
     private float jumpHeight = 3f;
 
     public Transform groundCheck;
@@ -36,7 +38,14 @@ public class playerMovement : MonoBehaviour
 
         move = transform.right * xAxis + transform.forward * zAxis;
 
-        controller.Move(move * moveSpeed * Time.deltaTime);
+        if (Input.GetButton("Fire3"))
+        {
+            controller.Move(move * moveSpeed * runSpeed * Time.deltaTime);
+        }
+        else
+        {
+            controller.Move(move * moveSpeed * Time.deltaTime);
+        }
 
         velocity.y += gravity * Time.deltaTime;
         controller.Move(velocity * Time.deltaTime);
@@ -47,10 +56,18 @@ public class playerMovement : MonoBehaviour
         }
     }
 
-    private void OnDrawGizmosSelected()
+    private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        Gizmos.color = Color.yellow;
-        Gizmos.DrawWireSphere(groundCheck.position, groundDistance);
-
+        return;
     }
+
+    if (rb== null)
+    {
+      return;
+        
+    }
+    
+
+    rb.AddForce(move * pushForce);
+
 }
