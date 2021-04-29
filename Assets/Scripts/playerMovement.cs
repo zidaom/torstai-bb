@@ -56,18 +56,26 @@ public class playerMovement : MonoBehaviour
         }
     }
 
+    private void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(groundCheck.position, groundDistance);
+    }
+
     private void OnControllerColliderHit(ControllerColliderHit hit)
     {
-        return;
+        if (hit.collider.gameObject.layer == 6)
+        {
+            return;
+        }
+
+        Rigidbody rb = hit.collider.gameObject.GetComponent<Rigidbody>();
+
+        if (rb == null)
+        {
+            return;
+        }
+
+        rb.AddForce(move * pushForce);
     }
-
-    if (rb== null)
-    {
-      return;
-        
-    }
-    
-
-    rb.AddForce(move * pushForce);
-
 }

@@ -35,7 +35,7 @@ public class Weapon : MonoBehaviour
             float totalTime = Time.time - holdDownTimer;
             Throw(CalculateHoldDownForce(totalTime * 2f));
         }
-        if (Input.GetButtonDown("Fire1"))
+        if (Input.GetButtonDown("Fire2"))
         {
             ProcessRayCast();
         }
